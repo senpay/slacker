@@ -4,8 +4,8 @@ import unittest
 
 import responses
 
-from slacker import Channels
-from slacker.utilities import get_api_url
+from slacker2 import Channels
+from slacker2.utilities import get_api_url
 
 
 class TestChannels(unittest.TestCase):

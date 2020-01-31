@@ -6,15 +6,15 @@ with open('README.rst') as f:
 
 
 setup(
-    name='slacker',
-    version='0.13.0',
-    packages=['slacker'],
-    description='Slack API client',
+    name='slacker2',
+    version='0.13.1',
+    packages=['slacker2'],
+    description='Slack API client, fork of slacker',
     long_description=readme,
     long_description_content_type='text/x-rst',
-    author='Oktay Sancak',
-    author_email='oktaysancak@gmail.com',
-    url='http://github.com/os/slacker/',
+    author='Oktay Sancak, Alexander Pushkarev',
+    author_email='oktaysancak@gmail.com, alexspush@gmail.com',
+    url='http://github.com/senpay/slacker/',
     install_requires=['requests >= 2.2.1'],
     license='http://www.apache.org/licenses/LICENSE-2.0',
     test_suite='tests',

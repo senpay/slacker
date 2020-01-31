@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 """List items in slack."""
 
-# https://github.com/os/slacker
+# https://github.com/senpay/slacker
+# fork of https://github/os/slacker
 # https://api.slack.com/methods
 
 import os
-from slacker import Slacker
+from slacker2 import Slacker
 
 
 def list_slack():

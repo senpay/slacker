@@ -18,7 +18,7 @@ import requests
 
 import time
 
-from slacker.utilities import (
+from slacker2.utilities import (
     get_api_url,
     get_item_id_by_name,
 )
