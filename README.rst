@@ -1,5 +1,5 @@
 =======
-Slacker
+Slacker2
 =======
 
 |pypi|_
@@ -13,7 +13,7 @@ Slacker
 About
 =====
 
-Slacker is a full-featured Python interface for the `Slack API
+Slacker2 is a fork and continuation of Slacker library, a full-featured Python interface for the `Slack API
 <https://api.slack.com/>`_.
 
 Installation
@@ -21,13 +21,13 @@ Installation
 
 .. code-block:: bash
 
-    $ pip install slacker
+    $ pip install slacker2
 
 Examples
 ========
 .. code-block:: python
 
-    from slacker import Slacker
+    from slacker2 import Slacker
 
     slack = Slacker('<your-slack-api-token-goes-here>')
 
