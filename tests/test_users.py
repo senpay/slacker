@@ -3,8 +3,8 @@
 import responses
 import unittest
 
-from slacker import Users
-from slacker.utilities import get_api_url
+from slacker2 import Users
+from slacker2.utilities import get_api_url
 
 
 class TestUsers(unittest.TestCase):
