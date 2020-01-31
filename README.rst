@@ -1,7 +1,3 @@
-=======
-Slacker2
-=======
-
 |pypi|_
 |build status|_
 |pypi downloads|_
@@ -64,9 +60,9 @@ https://api.slack.com/methods
 
 .. |build status| image:: https://img.shields.io/travis/os/slacker.svg
 .. _build status: http://travis-ci.org/os/slacker
-.. |pypi downloads| image:: https://img.shields.io/pypi/dm/slacker.svg
-.. _pypi downloads: https://pypi.org/project/slacker/
-.. |pypi| image:: https://img.shields.io/pypi/v/Slacker.svg
+.. |pypi downloads| image:: https://img.shields.io/pypi/dm/slacker2.svg
+.. _pypi downloads: https://pypi.org/project/slacker2/
+.. |pypi| image:: https://img.shields.io/pypi/v/Slacker2.svg
 .. _pypi: https://pypi.python.org/pypi/slacker/
 .. |license| image:: https://img.shields.io/github/license/os/slacker.svg
 .. _license: https://pypi.org/project/slacker/
