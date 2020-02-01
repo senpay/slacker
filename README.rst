@@ -58,8 +58,8 @@ Documentation
 https://api.slack.com/methods
 
 
-.. |build status| image:: https://img.shields.io/travis/os/slacker.svg
-.. _build status: http://travis-ci.org/os/slacker
+.. |build status| image:: https://apushkarev.visualstudio.com/slacker2/_apis/build/status/slacker2-CI
+.. _build status: https://apushkarev.visualstudio.com/slacker2/_build/latest?definitionId=2
 .. |pypi downloads| image:: https://img.shields.io/pypi/dm/slacker2.svg
 .. _pypi downloads: https://pypi.org/project/slacker2/
 .. |pypi| image:: https://img.shields.io/pypi/v/Slacker2.svg
