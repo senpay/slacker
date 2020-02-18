@@ -16,20 +16,15 @@ import json
 
 import requests
 
-import time
+from slacker2.base_api import BaseAPI, Response, Error
+from slacker2.chat import Chat
+from slacker2.constants import DEFAULT_TIMEOUT, DEFAULT_RETRIES
 
 from slacker2.utilities import (
     get_api_url,
     get_item_id_by_name,
 )
 
-
-__version__ = '0.13.0'
-
-DEFAULT_TIMEOUT = 10
-DEFAULT_RETRIES = 0
-# seconds to wait after a 429 error if Slack's API doesn't provide one
-DEFAULT_WAIT = 20
 
 __all__ = ['Error', 'Response', 'BaseAPI', 'API', 'Auth', 'Users', 'Groups',
            'Channels', 'Chat', 'IM', 'IncomingWebhook', 'Search', 'Files',
@@ -38,93 +33,6 @@ __all__ = ['Error', 'Response', 'BaseAPI', 'API', 'Auth', 'Users', 'Groups',
            'FilesComments', 'Reminders', 'TeamProfile', 'UsersProfile',
            'IDPGroups', 'Apps', 'AppsPermissions', 'Slacker', 'Dialog',
            'Conversations', 'Migration']
-
-
-class Error(Exception):
-    pass
-
-
-class Response(object):
-    def __init__(self, body):
-        self.raw = body
-        self.body = json.loads(body)
-        self.successful = self.body['ok']
-        self.error = self.body.get('error')
-
-    def __str__(self):
-        return json.dumps(self.body)
-
-
-class BaseAPI(object):
-    def __init__(self, token=None, timeout=DEFAULT_TIMEOUT, proxies=None,
-                 session=None, rate_limit_retries=DEFAULT_RETRIES):
-        self.token = token
-        self.timeout = timeout
-        self.proxies = proxies
-        self.session = session
-        self.rate_limit_retries = rate_limit_retries
-
-    def _request(self, request_method, method, **kwargs):
-        if self.token:
-            kwargs.setdefault('params', {})['token'] = self.token
-
-        url = get_api_url(method)
-
-        # while we have rate limit retries left, fetch the resource and back
-        # off as Slack's HTTP response suggests
-        for retry_num in range(self.rate_limit_retries):
-            response = request_method(
-                url, timeout=self.timeout, proxies=self.proxies, **kwargs
-            )
-
-            if response.status_code == requests.codes.ok:
-                break
-
-            # handle HTTP 429 as documented at
-            # https://api.slack.com/docs/rate-limits
-            if response.status_code == requests.codes.too_many:
-                time.sleep(int(
-                    response.headers.get('retry-after', DEFAULT_WAIT)
-                ))
-                continue
-
-            response.raise_for_status()
-        else:
-            # with no retries left, make one final attempt to fetch the
-            # resource, but do not handle too_many status differently
-            response = request_method(
-                url, timeout=self.timeout, proxies=self.proxies, **kwargs
-            )
-            response.raise_for_status()
-
-        response = Response(response.text)
-        if not response.successful:
-            raise Error(response.error)
-
-        return response
-
-    def _session_get(self, url, params=None, **kwargs):
-        kwargs.setdefault('allow_redirects', True)
-        return self.session.request(
-            method='get', url=url, params=params, **kwargs
-        )
-
-    def _session_post(self, url, data=None, **kwargs):
-        return self.session.request(
-            method='post', url=url, data=data, **kwargs
-        )
-
-    def get(self, api, **kwargs):
-        return self._request(
-            self._session_get if self.session else requests.get,
-            api, **kwargs
-        )
-
-    def post(self, api, **kwargs):
-        return self._request(
-            self._session_post if self.session else requests.post,
-            api, **kwargs
-        )
 
 
 class API(BaseAPI):
@@ -482,115 +390,6 @@ class Channels(BaseAPI):
     def get_channel_id(self, channel_name):
         channels = self.list().body['channels']
         return get_item_id_by_name(channels, channel_name)
-
-
-class Chat(BaseAPI):
-    def post_message(self, channel, text=None, username=None, as_user=None,
-                     parse=None, link_names=None, attachments=None,
-                     unfurl_links=None, unfurl_media=None, icon_url=None,
-                     icon_emoji=None, thread_ts=None, reply_broadcast=None,
-                     blocks=None):
-
-        # Ensure attachments are json encoded
-        if attachments:
-            if isinstance(attachments, list):
-                attachments = json.dumps(attachments)
-
-        return self.post('chat.postMessage',
-                         data={
-                             'channel': channel,
-                             'text': text,
-                             'username': username,
-                             'as_user': as_user,
-                             'parse': parse,
-                             'link_names': link_names,
-                             'attachments': attachments,
-                             'unfurl_links': unfurl_links,
-                             'unfurl_media': unfurl_media,
-                             'icon_url': icon_url,
-                             'icon_emoji': icon_emoji,
-                             'thread_ts': thread_ts,
-                             'reply_broadcast': reply_broadcast,
-                             'blocks': blocks
-                         })
-
-    def me_message(self, channel, text, blocks):
-        return self.post('chat.meMessage',
-                         data={
-                             'channel': channel,
-                             'text': text,
-                             'blocks': blocks
-                         })
-
-    def command(self, channel, command, text):
-        return self.post('chat.command',
-                         data={
-                             'channel': channel,
-                             'command': command,
-                             'text': text
-                         })
-
-    def update(self, channel, ts, text, attachments=None, parse=None,
-               link_names=False, as_user=None, blocks=None):
-        # Ensure attachments are json encoded
-        if attachments is not None and isinstance(attachments, list):
-            attachments = json.dumps(attachments)
-        return self.post('chat.update',
-                         data={
-                             'channel': channel,
-                             'ts': ts,
-                             'text': text,
-                             'attachments': attachments,
-                             'parse': parse,
-                             'link_names': int(link_names),
-                             'as_user': as_user,
-                             'blocks': blocks
-                         })
-
-    def delete(self, channel, ts, as_user=False):
-        return self.post('chat.delete',
-                         data={
-                             'channel': channel,
-                             'ts': ts,
-                             'as_user': as_user
-                         })
-
-    def post_ephemeral(self, channel, text, user, as_user=None,
-                       attachments=None, link_names=None, parse=None,
-                       blocks=None):
-        # Ensure attachments are json encoded
-        if attachments is not None and isinstance(attachments, list):
-            attachments = json.dumps(attachments)
-        return self.post('chat.postEphemeral',
-                         data={
-                             'channel': channel,
-                             'text': text,
-                             'user': user,
-                             'as_user': as_user,
-                             'attachments': attachments,
-                             'link_names': link_names,
-                             'parse': parse,
-                             'blocks': blocks
-                         })
-
-    def unfurl(self, channel, ts, unfurls, user_auth_message=None,
-               user_auth_required=False, user_auth_url=None):
-        return self.post('chat.unfurl',
-                         data={
-                             'channel': channel,
-                             'ts': ts,
-                             'unfurls': unfurls,
-                             'user_auth_message': user_auth_message,
-                             'user_auth_required': user_auth_required,
-                             'user_auth_url': user_auth_url,
-                         })
-
-    def get_permalink(self, channel, message_ts):
-        return self.get('chat.getPermalink',
-                        params={
-                            'channel': channel,
-                            'message_ts': message_ts
-                        })
 
 
 class IM(BaseAPI):

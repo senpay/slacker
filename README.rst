@@ -67,4 +67,4 @@ https://api.slack.com/methods
 .. |license| image:: https://img.shields.io/github/license/os/slacker.svg
 .. _license: https://pypi.org/project/slacker/
 .. |gitter chat| image:: https://badges.gitter.im/Join%20Chat.svg
-.. _gitter chat: https://gitter.im/os/slacker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+.. _gitter chat: https://gitter.im/senpay-slacker2/community
