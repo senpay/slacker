@@ -3,12 +3,11 @@
 |pypi downloads|_
 |license|_
 
-.. image:: https://raw.githubusercontent.com/os/slacker/master/static/slacker.jpg
 
 About
 =====
 
-Slacker2 is a fork and continuation of Slacker library, a full-featured Python interface for the `Slack API
+SlackerToo is a **fork** and continuation of `Slacker`_ library, a full-featured Python interface for the `Slack API
 <https://api.slack.com/>`_.
 
 Installation
@@ -62,6 +61,7 @@ https://api.slack.com/methods
 .. |pypi downloads| image:: https://img.shields.io/pypi/dm/slacker2.svg
 .. _pypi downloads: https://pypi.org/project/slacker2/
 .. |pypi| image:: https://img.shields.io/pypi/v/Slacker2.svg
-.. _pypi: https://pypi.python.org/pypi/slacker/
+.. _pypi: https://pypi.python.org/pypi/slacker2/
 .. |license| image:: https://img.shields.io/github/license/os/slacker.svg
-.. _license: https://pypi.org/project/slacker/
+.. _license: https://pypi.org/project/slacker2/
+.. _Slacker: https://pypi.org/project/slacker
