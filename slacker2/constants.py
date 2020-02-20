@@ -1,4 +1,4 @@
-__version__ = '0.14'
+VERSION = '2020.1'
 
 DEFAULT_TIMEOUT = 10
 DEFAULT_RETRIES = 0

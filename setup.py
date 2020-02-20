@@ -1,4 +1,5 @@
 from setuptools import setup
+from slacker2 import constants
 
 
 with open('README.rst') as f:
@@ -7,7 +8,7 @@ with open('README.rst') as f:
 
 setup(
     name='slacker2',
-    version='0.14',
+    version=constants.VERSION,
     packages=['slacker2'],
     description='Slack API client, fork of slacker',
     long_description=readme,
@@ -23,13 +24,11 @@ setup(
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
     keywords='slack api'
 )
