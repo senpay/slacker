@@ -1,3 +1,4 @@
+import os
 from setuptools import setup
 from slacker2 import constants
 
@@ -5,6 +6,11 @@ from slacker2 import constants
 with open('README.rst') as f:
     readme = f.read()
 
+
+lib_folder = os.path.dirname(os.path.realpath(__file__))
+requirements_txt = os.path.join(lib_folder, 'requirements.txt')
+with open(requirements_txt) as f:
+    install_requires = list(f.read().splitlines())
 
 setup(
     name='slacker2',
@@ -16,7 +22,8 @@ setup(
     author='Oktay Sancak, Alexander Pushkarev',
     author_email='oktaysancak@gmail.com, alexspush@gmail.com',
     url='http://github.com/senpay/slacker/',
-    install_requires=['requests >= 2.2.1'],
+    install_requires=install_requires,
+    setup_requires=install_requires,
     license='http://www.apache.org/licenses/LICENSE-2.0',
     test_suite='tests',
     classifiers=[
